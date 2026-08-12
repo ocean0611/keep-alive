@@ -1,0 +1,16 @@
+name: Keep Render Alive
+
+on:
+  schedule:
+    # 每 10 分鐘自動對 Render 發送一次 HTTP 請求
+    - cron: '*/10 * * * *'
+  workflow_dispatch: # 支援手動觸發測試
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send HTTP Ping to Render
+        run: |
+          curl -s https://linebot-co24.onrender.com > /dev/null
+          echo "當下時間 $(date +'%Y%m%d')測試成功"
