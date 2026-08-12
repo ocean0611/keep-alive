@@ -1,15 +1,17 @@
-name: Keep Render Alive
+const express = require('express');
+const app = express();
 
-on:
-  schedule:
-    - cron: "*/10 * * * *"
-  workflow_dispatch:
+// --- 貼在這一區 ---
+// 監聽根目錄的 GET 請求（GitHub Actions 敲門位置）
+app.get('/', (req, res) => {
+  console.log('GitHub Actions 心跳包敲門成功！', new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' }));
+  res.send('Server is alive!');
+});
+// -----------------
 
-jobs:
-  ping:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Send HTTP Ping to Render
-        run: |
-          curl -s https://linebot-co24.onrender.com > /dev/null
-          echo "執行時間：$(date +'%Y-%m-%d %H:%M:%S') 測試成功"
+// 原本的 LINE Bot Webhook 等其他程式碼...
+app.post('/callback', line.middleware(config), (req, res) => { ... });
+
+app.listen(10000, () => {
+  console.log('貓坊客服伺服器已啟動，運行端口：10000');
+});
